@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.1</Version>
+    <Authors>Szilágyi Béla</Authors>
+    <Company></Company>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>iszbela.TaskControl</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>It handles the chained control flow of synchronous/asynchronous tasks.</Description>
+    <RepositoryUrl>https://github.com/iszbelagithub/TaskControl</RepositoryUrl>
+	<PackageOutputPath>d:/Munka/VSC/nugets</PackageOutputPath>
+    <!--<PackageProjectUrl>https://github.com/YourRepo</PackageProjectUrl>-->
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+</PropertyGroup>
+<ItemGroup>
+  <None Include="README.md" Pack="True">
+    <PackagePath>\</PackagePath>
+  </None>
+</ItemGroup>
+
+
+</Project>
