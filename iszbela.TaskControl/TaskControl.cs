@@ -29,7 +29,7 @@ namespace iszbela.TaskControl
         /// <summary>
         /// Adding synchronous/asynchronous tasks to the list.
         /// </summary>
-        private void Add(Action action, int type, CancellationToken token)
+        private Task Add(Action action, int type, CancellationToken token)
         {
             //Regulating the addition of multiple tasks, where one executes while the others wait their turn.
             lock (_lock)
@@ -51,7 +51,8 @@ namespace iszbela.TaskControl
                     if (type == 0) //sync
                     {
                         List<Task> newgroup = new List<Task>();
-                        newgroup.Add(Task.WhenAll(group).ContinueWith((x) =>
+                      
+                        Task response = (Task.WhenAll(group).ContinueWith((x) =>
                         {
                             lock (_lock)
                             {
@@ -64,17 +65,26 @@ namespace iszbela.TaskControl
                             }
                             action();
                         }, cancellation.Token));
+
+                        newgroup.Add(response);
+
                         tasks.Add(newgroup);
+                        return response;
                     }
                     else // async
                     {
                         if (group.Count > 1) // Async, the current group.
                         {
-                            group.Add(
+
+
+                           Task response = (
                                 Task.WhenAll(group[0]).ContinueWith((x) =>  //When the first async task starts, the others start as well.
                                 {
                                     action();
                                 }, cancellation.Token));
+                            group.Add(response);
+                            return response;
+
                         }
                         else
                         { //Sync, the current group.
@@ -83,7 +93,9 @@ namespace iszbela.TaskControl
                             List<Task> newgroup = new List<Task>();
 
                             newgroup.Add(new Task(() => { }, cancellation.Token)); //Because two tasks indicate they are async.
-                            newgroup.Add(
+                            
+                            
+                            Task response = (
                                 Task.WhenAll(group).ContinueWith((x) =>
                                 {
                                     lock (_lock)
@@ -98,12 +110,38 @@ namespace iszbela.TaskControl
                                     newgroup[0].Start();
                                     action();
                                 }, cancellation.Token));
-                            tasks.Add(newgroup);
+
+                            newgroup.Add(response);
+                           tasks.Add(newgroup);
+                           return response;
                         }
                     }
                 }
             }
+            return Task.CompletedTask;
         }
+
+        /// <summary>
+        ///Adding a synchronous task to the task list.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="token"></param>
+        public Task AddSyncTask(Action action, CancellationToken token)
+        {
+            return Add(action, 0, token);
+        }
+
+
+        /// <summary>
+        /// Adding an asynchronous task to the task list.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="token"></param>
+        public Task AddAsyncTask(Action action, CancellationToken token)
+        {
+            return Add(action, 1, token);
+        }
+
 
         /// <summary>
         ///Adding a synchronous task to the task list.
