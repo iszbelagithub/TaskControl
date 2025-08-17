@@ -11,10 +11,16 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>https://github.com/iszbelagithub/TaskControl#readme</Description>
     <RepositoryUrl>https://github.com/iszbelagithub/TaskControl</RepositoryUrl>
+    <RepositoryUrl>https://github.com/iszbelagithub/TaskControl</RepositoryUrl>
+	
 	<PackageOutputPath>d:/Munka/VSC/nugets</PackageOutputPath>
-    <!--<PackageProjectUrl>https://github.com/YourRepo</PackageProjectUrl>-->
+    <PackageProjectUrl>https://github.com/iszbelagithub/TaskControl</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 </PropertyGroup>
-
-
+	<ItemGroup>
+		<None Include="README.md" Pack="True">
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 </Project>
