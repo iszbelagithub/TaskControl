@@ -180,7 +180,9 @@ public class Example
     }
 }
 ```
-
+---
+Nuget package:
+https://www.nuget.org/packages/iszbela.TaskControl
 ---
 
 ## License
